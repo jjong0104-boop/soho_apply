@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>LG U+ 우리가게패키지 가입신청</title>
+    <style>
+        :root { --main-color: #E6007E; --bg-gray: #f4f4f4; }
+        body { font-family: 'Noto Sans KR', sans-serif; background-color: var(--bg-gray); margin: 0; padding: 20px; box-sizing: border-box; font-size: 16px; }
+        .container { max-width: 500px; margin: 0 auto; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h2 { color: var(--main-color); text-align: center; margin-bottom: 25px; font-size: 1.4rem; }
+        h3 { font-size: 1rem; color: #333; border-left: 4px solid var(--main-color); padding-left: 10px; margin: 20px 0 10px 0; }
+        
+        input, select { width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 1rem; }
+        
+        /* 아코디언 스타일 */
+        .accordion-item { border: 1px solid #eee; border-radius: 8px; margin-bottom: 10px; overflow: hidden; }
+        .acc-header { width: 100%; padding: 15px; text-align: left; background: #fff; border: none; cursor: pointer; font-weight: bold; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; }
+        .acc-header.active { background-color: #fff0f6; color: var(--main-color); }
+        .acc-body { padding: 15px; background: #fafafa; display: none; }
+
+        button.submit-btn { width: 100%; padding: 15px; background-color: var(--main-color); color: white; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: bold; margin-top: 20px; cursor: pointer; }
+        button.submit-btn:active { background-color: #c5006d; transform: scale(0.98); }
+        
+        .hint { font-size: 0.8rem; color: #888; margin-top: -8px; margin-bottom: 10px; padding-left: 5px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>가입 신청서 작성</h2>
+
+    <h3>가입자 정보 (필수)</h3>
+    <input type="text" id="userName" placeholder="고객명 (법인/대표자명)" required>
+    <input type="tel" id="userBirth" placeholder="생년월일 (예: 900101)" required>
+    <input type="tel" id="userPhone" placeholder="연락처 (- 없이 입력)" required>
+    <input type="email" id="userEmail" placeholder="이메일 주소" required>
+    <input type="text" id="installAddr" placeholder="설치 상세 주소" required>
+
+    <h3>사업자 정보 (선택)</h3>
+    <input type="text" id="bizName" placeholder="사업자등록명">
+    <input type="tel" id="bizNum" placeholder="사업자등록번호">
+
+    <h3>요금 납부 방법 (필수 선택)</h3>
+    <div class="accordion">
+        <div class="accordion-item">
+            <button type="button" class="acc-header" id="btn-bank" onclick="selectMethod('bank')">🏦 자동이체 (은행) <span>▼</span></button>
+            <div id="body-bank" class="acc-body">
+                <input type="text" id="bankName" placeholder="은행명">
+                <input type="tel" id="bankAccount" placeholder="계좌번호 (- 없이)">
+            </div>
+        </div>
+        <div class="accordion-item">
+            <button type="button" class="acc-header" id="btn-card" onclick="selectMethod('card')">💳 카드 정기결제 <span>▼</span></button>
+            <div id="body-card" class="acc-body">
+                <input type="text" id="cardCompany" placeholder="카드사">
+                <input type="tel" id="cardNumber" placeholder="카드번호 (- 없이)">
+                <input type="tel" id="cardValid" placeholder="유효기간 (MMYY)">
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="selectedMethod" value="">
+
+    <button class="submit-btn" onclick="submitData()">신청서 제출하기</button>
+</div>
+
+<script>
+    let currentMethod = '';
+
+    function selectMethod(method) {
+        // 초기화
+        document.getElementById('body-bank').style.display = 'none';
+        document.getElementById('body-card').style.display = 'none';
+        document.getElementById('btn-bank').classList.remove('active');
+        document.getElementById('btn-card').classList.remove('active');
+
+        // 선택 활성화
+        if (currentMethod !== method) {
+            document.getElementById('body-' + method).style.display = 'block';
+            document.getElementById('btn-' + method).classList.add('active');
+            document.getElementById('selectedMethod').value = (method === 'bank') ? '자동이체' : '카드결제';
+            currentMethod = method;
+        } else {
+            document.getElementById('selectedMethod').value = '';
+            currentMethod = '';
+        }
+    }
+
+    function submitData() {
+        const method = document.getElementById('selectedMethod').value;
+        if(!method) { alert('납부 방법을 선택해주세요.'); return; }
+
+        const data = {
+            userName: document.getElementById('userName').value,
+            userBirth: document.getElementById('userBirth').value,
+            userPhone: document.getElementById('userPhone').value,
+            userEmail: document.getElementById('userEmail').value,
+            installAddr: document.getElementById('installAddr').value,
+            bizName: document.getElementById('bizName').value || '-',
+            bizNum: document.getElementById('bizNum').value || '-',
+            payMethod: method,
+            payTarget: method === '자동이체' ? document.getElementById('bankName').value : document.getElementById('cardCompany').value,
+            payNumber: method === '자동이체' ? document.getElementById('bankAccount').value : document.getElementById('cardNumber').value,
+            payValid: method === '카드결제' ? document.getElementById('cardValid').value : '-'
+        };
+
+        if(!data.userName || !data.userPhone) { alert('필수 항목을 입력해주세요.'); return; }
+
+        // 여기에 기존에 사용하시던 Google Apps Script 배포 URL을 넣으세요.
+        const GAS_URL = "여기에_스크립트_배포_URL_붙여넣기";
+
+        fetch(GAS_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            body: JSON.stringify(data)
+        }).then(() => {
+            alert('신청이 완료되었습니다!');
+            window.location.reload();
+        }).catch(err => alert('오류가 발생했습니다: ' + err));
+    }
+</script>
+
+</body>
+</html>
