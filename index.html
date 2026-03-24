@@ -344,13 +344,13 @@ KIBNET, 토스페이먼츠, 자동인출 신청 은행
                 showSuccessUI(allData.userName);
             });
         }
+    }) // ✅ 여기서 괄호가 잘 닫혀야 합니다.
+    .catch(e => {
+        Swal.fire({ title: '오류 발생', text: '전송에 실패했습니다. 다시 시도해주세요.', icon: 'error' });
+        btn.disabled = false;
+        btn.innerText = "제출 완료";
     });
-}).catch(e => {
-            Swal.fire({ title: '오류 발생', text: '전송에 실패했습니다. 다시 시도해주세요.', icon: 'error' });
-            btn.disabled = false;
-            btn.innerText = "제출 완료";
-        });
-    }
+}
 
     function showSuccessUI(name) {
         document.getElementById('mainContainer').innerHTML = `
