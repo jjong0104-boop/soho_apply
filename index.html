@@ -70,11 +70,10 @@
         <input type="tel" id="userPhone" placeholder="연락처(- 없이) *" required>
         <input type="email" id="userEmail" placeholder="이메일 주소 *">
         
-        <div style="display: flex; flex-wrap: wrap;">
-            <input type="text" id="installAddr" placeholder="설치 주소 *" readonly onclick="execDaumPostcode()">
-            <button class="addr-btn" onclick="execDaumPostcode()">검색</button>
-        </div>
-        <input type="text" id="installDetail" placeholder="상세 주소 (호수, 사무실명 등) *">
+       <div style="display: flex; flex-wrap: wrap; margin-bottom: 8px;">
+    <input type="text" id="installAddr" placeholder="설치 주소 *" readonly onclick="execDaumPostcode()" style="cursor: pointer; width: 68%; margin-right: 2%; margin-bottom: 0;">
+    <button type="button" class="addr-btn" onclick="execDaumPostcode()" style="width: 30%; height: 45px; margin-bottom: 0;">검색</button>
+</div>
 
         <div class="section-title">사업자 정보 (선택)</div>
         <input type="text" id="bizName" placeholder="사업자등록명">
