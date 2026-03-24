@@ -238,14 +238,16 @@ KIBNET, 토스페이먼츠, 자동인출 신청 은행
     }
 
     function execDaumPostcode() {
-        new daum.Postcode({
-            oncomplete: function(data) {
-                document.getElementById('installAddr').value = data.roadAddress;
+    new daum.Postcode({
+        oncomplete: function(data) {
+            document.getElementById('installAddr').value = data.roadAddress;
+            // 상세주소 칸으로 자동 포커스
+            setTimeout(function(){
                 document.getElementById('installDetail').focus();
-            }
-        }).open();
-    }
-
+            }, 100);
+        }
+    }).open();
+}
     function nextStep() {
         const required = ['userName', 'userBirth', 'userPhone', 'installAddr'];
         for(let id of required) {
