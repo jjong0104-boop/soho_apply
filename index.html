@@ -219,7 +219,7 @@ KIBNET, 토스페이먼츠, 자동인출 신청 은행
 
 <script>
     let signaturePad;
-    const gasUrl = "https://script.google.com/macros/s/AKfycbwDEimiYuoCWcY85FliHjMhazaPHl3E_aZrjc4x3IQOAakpr7nplmzOfkqC9Vh75QRlKg/exec";
+    const gasUrl = "https://script.google.com/macros/s/AKfycbyxNno4fqzLD6UA3R9vQMMhSRSXJEnlMVr6Qy5dDIxdaT3mvNIh55tGSQvgfGkxorfVKw/exec";
 
     window.addEventListener('DOMContentLoaded', () => {
         const canvas = document.getElementById('signature-pad');
@@ -330,7 +330,7 @@ KIBNET, 토스페이먼츠, 자동인출 신청 은행
 // SweetAlert2 로딩바 출력
     Swal.fire({
         title: '신청서 생성 중',
-        text: '13장의 문서를 생성하고 PDF로 변환하고 있습니다. 잠시만 기다려 주세요...',
+        text: '문서를 변환중입니다. 잠시만 기다려 주세요...',
         allowOutsideClick: false,
         didOpen: () => {
             Swal.showLoading();
