@@ -215,7 +215,15 @@
 
         fetch(gasUrl, { method: 'POST', body: JSON.stringify(allData) })
         .then(() => {
-            alert("신청서 제출이 완료되었습니다.");
+            Swal.fire({
+  title: '제출 완료!',
+  text: '신청서 작성이 정상적으로 처리되었습니다.',
+  icon: 'success',
+  confirmButtonText: '홈으로',
+  confirmButtonColor: '#E6007E'
+}).then(() => {
+  location.reload();
+});
             location.reload();
         }).catch(e => {
             alert("오류 발생");
