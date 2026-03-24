@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>U+ 우리가게패키지 가입신청서</title>
@@ -157,7 +158,13 @@
     function nextStep() {
         const required = ['userName', 'userBirth', 'userPhone', 'installAddr'];
         for(let id of required) {
-            if(!document.getElementById(id).value) { alert("필수 항목을 모두 입력해주세요."); return; }
+            if(!document.getElementById(id).value) { Swal.fire({
+  title: '사장마켓 알림',
+  text: '필수 항목을 모두 입력해주세요.',
+  icon: 'warning',
+  confirmButtonText: '확인',
+  confirmButtonColor: '#E6007E' // LG 유플러스 핑크색과 맞춤
+}); return; }
         }
         document.getElementById('step1').classList.remove('step-active');
         document.getElementById('step2').classList.add('step-active');
