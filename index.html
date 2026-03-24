@@ -321,22 +321,30 @@ KIBNET, 토스페이먼츠, 자동인출 신청 은행
         cardValid: document.getElementById('cardValid').value,
         signature: signaturePad.toDataURL("image/png") // PNG 포맷 명시
     };
-
-        fetch(gasUrl, { method: 'POST', body: JSON.stringify(allData) })
-        .then(() => {
-            // [개선] 제출 완료 후 페이지 유지 및 성공 화면 표시
+// SweetAlert2 로딩바 출력
+    Swal.fire({
+        title: '신청서 생성 중',
+        text: '13장의 문서를 생성하고 PDF로 변환하고 있습니다. 잠시만 기다려 주세요...',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+       fetch(gasUrl, { method: 'POST', body: JSON.stringify(allData) })
+    .then(res => res.json())
+    .then(res => {
+        if(res.result === "success") {
             Swal.fire({
-                title: '사장마켓 알림',
-                text: '신청서 작성이 정상적으로 처리되었습니다.',
+                title: '사장마켓 안내',
+                text: '신청서 접수 및 PDF 생성이 완료되었습니다.',
                 icon: 'success',
-                confirmButtonText: '확인',
                 confirmButtonColor: '#E6007E'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    showSuccessUI(allData.userName);
-                }
+            }).then(() => {
+                showSuccessUI(allData.userName);
             });
-        }).catch(e => {
+        }
+    });
+}).catch(e => {
             Swal.fire({ title: '오류 발생', text: '전송에 실패했습니다. 다시 시도해주세요.', icon: 'error' });
             btn.disabled = false;
             btn.innerText = "제출 완료";
