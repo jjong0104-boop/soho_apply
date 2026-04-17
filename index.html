@@ -13,7 +13,6 @@
         body { font-family: 'Noto Sans KR', sans-serif; background-color: var(--bg-gray); margin: 0; padding: 15px; box-sizing: border-box; color: #333; }
         .container { max-width: 500px; margin: 0 auto; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
         
-        /* 단계별 제어 */
         .step-page { display: none; }
         .step-active { display: block; }
         .step-indicator { text-align: right; font-size: 0.85rem; color: #888; margin-bottom: 10px; }
@@ -25,11 +24,9 @@
         .addr-btn { width: 30%; background: #666; color: white; border: none; padding: 12px; border-radius: 6px; margin-bottom: 8px; cursor: pointer; }
         #installAddr { width: 68%; margin-right: 2%; }
 
-        /* 동의 박스 스타일 */
         .agreement-box { background: #f1f1f1; border: 1px solid #ddd; padding: 10px; font-size: 0.75rem; color: #666; height: 120px; overflow-y: scroll; margin-bottom: 10px; line-height: 1.5; border-radius: 4px; }
         .agreement-title { font-weight: bold; font-size: 0.85rem; margin-bottom: 5px; color: #444; }
         
-        /* [개선] 동의 체크박스 카드 UI */
         .form-check { 
             display: flex; align-items: center; justify-content: center; 
             gap: 12px; margin: 20px 0; background: #fff0f6; padding: 15px; 
@@ -43,7 +40,6 @@
         }
         .form-check-label { font-size: 1.05rem; font-weight: bold; cursor: pointer; color: #333; }
 
-        /* 서명 패드 */
         .signature-wrapper { border: 1px solid #ddd; background: #fdfdfd; position: relative; border-radius: 12px; margin-top: 10px; height: 180px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); }
         #signature-pad { position: absolute; left: 0; top: 0; width: 100%; height: 100%; touch-action: none; border-radius: 12px; }
         #sig-placeholder { position: absolute; width: 100%; text-align: center; top: 50%; transform: translateY(-50%); color: #bbb; pointer-events: none; }
@@ -52,7 +48,6 @@
         .btn-secondary { width: 100%; padding: 15px; background: #888; color: white; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: bold; cursor: pointer; }
         .btn-small { padding: 5px 10px; font-size: 0.8rem; background: #eee; border: 1px solid #ccc; border-radius: 4px; }
         
-        /* 성공 페이지 스타일 */
         .success-container { text-align: center; padding: 40px 20px; }
         .success-icon { font-size: 50px; margin-bottom: 20px; }
     </style>
@@ -62,52 +57,55 @@
 <div class="container" id="mainContainer">
     <h2>사장마켓 U+ 가입신청서</h2>
 
+    <!-- STEP 1 -->
     <div id="step1" class="step-page step-active">
         <div class="step-indicator">(1/2) 정보 입력</div>
-       <div class="section-title">가입자 기본 정보</div>
-<input type="text" id="userName" placeholder="고객명(대표자명) *" required>
-<input type="tel" id="userBirth" placeholder="생년월일(6자리) *" maxlength="6">
-<input type="tel" id="userPhone" placeholder="연락처(- 없이) *" required>
-<input type="email" id="userEmail" placeholder="이메일 주소">
 
-<div style="display: flex; flex-wrap: wrap; margin-bottom: 8px;">
-    <input type="text" id="installAddr" placeholder="설치 주소 *" readonly onclick="execDaumPostcode()" style="cursor: pointer; width: 68%; margin-right: 2%; margin-bottom: 0;">
-    <button type="button" class="addr-btn" onclick="execDaumPostcode()" style="width: 30%; height: 45px; margin-bottom: 0;">검색</button>
-</div>
+        <div class="section-title">가입자 기본 정보</div>
+        <input type="text" id="userName" placeholder="고객명(대표자명) *" required>
+        <input type="tel"  id="userBirth" placeholder="생년월일(6자리) *" maxlength="6">
+        <input type="tel"  id="userPhone" placeholder="연락처(- 없이) *" required>
+        <input type="email" id="userEmail" placeholder="이메일 주소">
 
-<input type="text" id="installDetail" placeholder="상세 주소 (호수, 사무실명 등) *" required>
+        <div style="display: flex; flex-wrap: wrap; margin-bottom: 8px;">
+            <input type="text" id="installAddr" placeholder="설치 주소 *" readonly onclick="execDaumPostcode()" style="cursor: pointer; width: 68%; margin-right: 2%; margin-bottom: 0;">
+            <button type="button" class="addr-btn" onclick="execDaumPostcode()" style="width: 30%; height: 45px; margin-bottom: 0;">검색</button>
+        </div>
+        <input type="text" id="installDetail" placeholder="상세 주소 (호수, 사무실명 등) *" required>
 
         <div class="section-title">사업자 정보 (선택)</div>
         <input type="text" id="bizName" placeholder="사업자등록명">
-        <input type="tel" id="bizNum" placeholder="사업자등록번호">
+        <input type="tel"  id="bizNum"  placeholder="사업자등록번호">
 
         <div class="section-title">요금 납부 방법</div>
         <select id="payMethod" onchange="togglePayFields()">
             <option value="자동이체">자동이체 (은행)</option>
             <option value="카드결제">카드 정기결제</option>
         </select>
-        
-     <div id="bankFields">
-    <input type="text" id="bankOwner" placeholder="예금주 성함 (미입력 시 고객명 적용)">
-    <input type="text" id="bankName" placeholder="은행명">
-    <input type="tel" id="bankAccount" placeholder="계좌번호 (- 없이)">
-</div>
-        
-      <div id="cardFields" style="display:none;">
-    <input type="text" id="cardOwner" placeholder="카드주 성함 (미입력 시 고객명 적용)">
-    <input type="text" id="cardCompany" placeholder="카드사">
-    <input type="tel" id="cardNumber" placeholder="카드번호 (- 없이)">
-    <input type="tel" id="cardValid" placeholder="유효기간 (MMYY)" maxlength="4">
-</div>
+
+        <div id="bankFields">
+            <input type="text" id="bankOwner"   placeholder="예금주 성함 (미입력 시 고객명 적용)">
+            <input type="text" id="bankName"    placeholder="은행명">
+            <input type="tel"  id="bankAccount" placeholder="계좌번호 (- 없이)">
+        </div>
+
+        <div id="cardFields" style="display:none;">
+            <input type="text" id="cardOwner"   placeholder="카드주 성함 (미입력 시 고객명 적용)">
+            <input type="text" id="cardCompany" placeholder="카드사">
+            <input type="tel"  id="cardNumber"  placeholder="카드번호 (- 없이)">
+            <input type="tel"  id="cardValid"   placeholder="유효기간 (MMYY)" maxlength="4">
+        </div>
 
         <button class="btn-magenta" onclick="nextStep()" style="margin-top:20px;">다음 단계로</button>
     </div>
 
+    <!-- STEP 2 -->
     <div id="step2" class="step-page">
         <div class="step-indicator">(2/2) 개인정보 활용 동의 및 서명</div>
-        
+
         <div class="section-title">개인정보 활용 동의</div>
-         <div id="agreementArea">
+        <div id="agreementArea">
+
             <div class="mb-4">
                 <div class="agreement-title">1. (필수) 고유식별정보 수집·이용 동의</div>
                 <div class="agreement-box">(1) 이용목적: 휴대폰 본인확인 서비스 제공, 본인확인, 보안인증, 미환급금 안내, 실명인증
@@ -115,7 +113,6 @@
 (3) 이용기간: 서비스 가입기간 동안 이용 및 해지 후 요금완납 6개월까지
 (4) 동의거부권 및 불이익: 동의 거부 가능하나 거부 시 본인확인/인증 불가로 서비스 가입 불가
 관련 법령에 따라 보존이 필요한 경우 해당 법령에 따라 보유</div>
-               
             </div>
 
             <div class="mb-4">
@@ -138,7 +135,6 @@
 서비스 가입 과정에서 신청이 완료되지 않은 경우: 사유 확인 및 구비서류 보완 등을 위해 작성일로부터 3개월까지 보유
 외국인 출국여부 확인: 체류기간까지
 상담내용(전화/챗봇/채팅/이메일 등) 분석: 3년</div>
-               
             </div>
 
             <div class="mb-4">
@@ -147,7 +143,6 @@
 (2) 수집항목: 개인위치정보: 기지국, GPS, Wifi, RFID 태그 및 위치정보시스템을 통해 수집되는 위치정보
 2항의 개인정보 및 개인위치정보를 조합하여 생성되는 정보
 (3) 이용기간: 서비스 가입기간 동안 이용 및 분쟁대비를 위해 해지 후 요금완납 3개월까지</div>
-               
             </div>
 
             <div class="mb-4">
@@ -183,23 +178,20 @@ KIBNET, 토스페이먼츠, 자동인출 신청 은행
 (4) 기타: Msafer(명의도용 방지 서비스): 신규 가입 시 명의도용 방지를 위해 한국정보통신진흥협회 및 타 통신사업자에 제공하여 기존 사용 중인 전화로 개통사실 통보
 개인정보 침해신고: 1544-0010/0001, 101, privacy@lguplus.co.kr
 (개인정보 관리 책임자: 고객보호팀장)
-동의 거부 가능, 미동의 시 서비스 가입·이용 제약 가능, 미동의 시 정보 미제공. 위탁·제공 현황 및 변동사항은 홈페이지 개인정보취급방침에 공개
-                </div>
-               
+동의 거부 가능, 미동의 시 서비스 가입·이용 제약 가능, 미동의 시 정보 미제공. 위탁·제공 현황 및 변동사항은 홈페이지 개인정보취급방침에 공개</div>
             </div>
 
-                <div class="mb-4">
-
+            <div class="mb-4">
                 <div class="agreement-title">5. (필수) 문서상 동의 체크 항목</div>
-
                 <div class="agreement-box">(1) 필수 개인신용정보 조회 동의: 본인은 하기 내용에 충분히 이해하고 동의합니다.
-
-                (2) 필수 개인정보 취급위탁 동의: 본인은 하기 내용에 충분히 이해하고 동의합니다.</div>
+(2) 필수 개인정보 취급위탁 동의: 본인은 하기 내용에 충분히 이해하고 동의합니다.</div>
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" id="allAgreeCheck">
                     <label class="form-check-label fw-bold text-dark" for="allAgreeCheck">모든 필수 항목에 동의합니다.</label>
                 </div>
             </div>
+
+        </div>
 
         <div class="section-title">신청인 확인 서명</div>
         <div class="signature-wrapper">
@@ -219,52 +211,59 @@ KIBNET, 토스페이먼츠, 자동인출 신청 은행
 
 <script>
     let signaturePad;
+
+    // ✅ 새 웹앱 배포 후 이 URL을 교체하세요
     const gasUrl = "https://script.google.com/macros/s/AKfycby8wtBcyJqZD0SylCHCYXbKtVjAX9scTe9P4JOLgJVgCkYK0aOnF8dDZW6qjFO3cHRxVA/exec";
 
     window.addEventListener('DOMContentLoaded', () => {
         const canvas = document.getElementById('signature-pad');
         signaturePad = new SignaturePad(canvas, { minWidth: 3, maxWidth: 8, penColor: "black" });
-        
-        const hidePlaceholder = () => { document.getElementById('sig-placeholder').style.display = 'none'; };
+
+        const hidePlaceholder = () => {
+            document.getElementById('sig-placeholder').style.display = 'none';
+        };
         canvas.addEventListener('mousedown', hidePlaceholder);
         canvas.addEventListener('touchstart', hidePlaceholder);
 
         window.addEventListener("resize", resizeCanvas);
         resizeCanvas();
+
+        // URL 파라미터로 이름·전화번호 자동 입력
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('name'))  document.getElementById('userName').value  = params.get('name');
+        if (params.get('phone')) document.getElementById('userPhone').value = params.get('phone');
     });
 
     function togglePayFields() {
         const method = document.getElementById('payMethod').value;
         document.getElementById('bankFields').style.display = method === '자동이체' ? 'block' : 'none';
-        document.getElementById('cardFields').style.display = method === '카드결제' ? 'block' : 'none';
+        document.getElementById('cardFields').style.display = method === '카드결제'  ? 'block' : 'none';
     }
 
     function execDaumPostcode() {
-    new daum.Postcode({
-        oncomplete: function(data) {
-            // 1. 도로명 주소 입력
-            document.getElementById('installAddr').value = data.roadAddress;
-            // 2. 0.1초 뒤 상세주소 칸에 자동으로 커서 깜빡이게 함
-            setTimeout(function(){
-                const detailInput = document.getElementById('installDetail');
-                if(detailInput) detailInput.focus();
-            }, 100);
-        }
-    }).open();
-}
-    
+        new daum.Postcode({
+            oncomplete: function(data) {
+                document.getElementById('installAddr').value = data.roadAddress;
+                setTimeout(function() {
+                    const detailInput = document.getElementById('installDetail');
+                    if (detailInput) detailInput.focus();
+                }, 100);
+            }
+        }).open();
+    }
+
     function nextStep() {
         const required = ['userName', 'userBirth', 'userPhone', 'installAddr'];
-        for(let id of required) {
-            if(!document.getElementById(id).value) { 
-                Swal.fire({ title: '사장마켓 알림', text: '필수 항목을 모두 입력해주세요.', icon: 'warning', confirmButtonColor: '#E6007E' }); 
-                return; 
+        for (let id of required) {
+            if (!document.getElementById(id).value) {
+                Swal.fire({ title: '사장마켓 알림', text: '필수 항목을 모두 입력해주세요.', icon: 'warning', confirmButtonColor: '#E6007E' });
+                return;
             }
         }
         document.getElementById('step1').classList.remove('step-active');
         document.getElementById('step2').classList.add('step-active');
         resizeCanvas();
-        window.scrollTo(0,0);
+        window.scrollTo(0, 0);
     }
 
     function prevStep() {
@@ -280,82 +279,99 @@ KIBNET, 토스페이먼츠, 자동인출 신청 은행
     function resizeCanvas() {
         const canvas = document.getElementById('signature-pad');
         const ratio = Math.max(window.devicePixelRatio || 1, 1);
-        canvas.width = canvas.offsetWidth * ratio;
+        canvas.width  = canvas.offsetWidth  * ratio;
         canvas.height = canvas.offsetHeight * ratio;
         canvas.getContext("2d").scale(ratio, ratio);
     }
 
     function submitData() {
-    const method = document.getElementById('payMethod').value;
-    
-    // [추가] 납부 수단별 상세 유효성 검사
-    if(method === '자동이체') {
-        if(!document.getElementById('bankName').value || !document.getElementById('bankAccount').value) { 
-            Swal.fire({ title: '알림', text: '은행명과 계좌번호를 입력해주세요.', icon: 'warning', confirmButtonColor: '#E6007E' }); 
-            return; 
-        }
-    } else if(method === '카드결제') {
-        if(!document.getElementById('cardCompany').value || !document.getElementById('cardNumber').value || !document.getElementById('cardValid').value) { 
-            Swal.fire({ title: '알림', text: '카드 정보를 정확히 입력해주세요.', icon: 'warning', confirmButtonColor: '#E6007E' }); 
-            return; 
-        }
-    }
+        const method = document.getElementById('payMethod').value;
 
-    if(!document.getElementById('allAgreeCheck').checked) { /* 기존 로직 동일 */ }
-    if(signaturePad.isEmpty()) { /* 기존 로직 동일 */ }
-
-    const btn = document.getElementById('submitBtn');
-    btn.disabled = true; btn.innerText = "전송 중...";
-
-    // [수정] 전송 데이터 객체 구성
-    const allData = {
-        userName: document.getElementById('userName').value,
-        userBirth: document.getElementById('userBirth').value,
-        userPhone: document.getElementById('userPhone').value,
-        userEmail: document.getElementById('userEmail').value,
-        installAddr: document.getElementById('installAddr').value + " " + document.getElementById('installDetail').value,
-        bizName: document.getElementById('bizName').value || '-',
-        bizNum: document.getElementById('bizNum').value || '-',
-        payMethod: method,
-        // 예금주/카드주가 비어있으면 가입자명으로 자동 대체
-        bankOwner: document.getElementById('bankOwner').value || document.getElementById('userName').value,
-        bankName: document.getElementById('bankName').value,
-        bankAccount: document.getElementById('bankAccount').value,
-        cardOwner: document.getElementById('cardOwner').value || document.getElementById('userName').value,
-        cardCompany: document.getElementById('cardCompany').value,
-        cardNumber: document.getElementById('cardNumber').value,
-        cardValid: document.getElementById('cardValid').value,
-        signature: signaturePad.toDataURL("image/png") // PNG 포맷 명시
-    };
-// SweetAlert2 로딩바 출력
-    Swal.fire({
-        title: '신청서 생성 중',
-        text: '문서를 변환중입니다. 잠시만 기다려 주세요...',
-        allowOutsideClick: false,
-        didOpen: () => {
-            Swal.showLoading();
+        // 납부 수단별 유효성 검사
+        if (method === '자동이체') {
+            if (!document.getElementById('bankName').value || !document.getElementById('bankAccount').value) {
+                Swal.fire({ title: '알림', text: '은행명과 계좌번호를 입력해주세요.', icon: 'warning', confirmButtonColor: '#E6007E' });
+                return;
+            }
+        } else if (method === '카드결제') {
+            if (!document.getElementById('cardCompany').value || !document.getElementById('cardNumber').value || !document.getElementById('cardValid').value) {
+                Swal.fire({ title: '알림', text: '카드 정보를 정확히 입력해주세요.', icon: 'warning', confirmButtonColor: '#E6007E' });
+                return;
+            }
         }
-    });
-       fetch(gasUrl, { method: 'POST', body: JSON.stringify(allData) })
-    .then(res => res.json())
-    .then(res => {
-        if(res.result === "success") {
-            Swal.fire({
-                title: '사장마켓 안내',
-                text: '신청서 접수 및 PDF 생성이 완료되었습니다.',
-                icon: 'success',
-                confirmButtonColor: '#E6007E'
-            }).then(() => {
-                showSuccessUI(allData.userName);
+
+        // ✅ [수정] 동의 체크 확인
+        if (!document.getElementById('allAgreeCheck').checked) {
+            Swal.fire({ title: '알림', text: '필수 항목에 동의해주세요.', icon: 'warning', confirmButtonColor: '#E6007E' });
+            return;
+        }
+
+        // ✅ [수정] 서명 확인
+        if (signaturePad.isEmpty()) {
+            Swal.fire({ title: '알림', text: '서명을 해주세요.', icon: 'warning', confirmButtonColor: '#E6007E' });
+            return;
+        }
+
+        const btn = document.getElementById('submitBtn');
+        btn.disabled = true;
+        btn.innerText = "전송 중...";
+
+        const allData = {
+            userName:    document.getElementById('userName').value,
+            userBirth:   document.getElementById('userBirth').value,
+            userPhone:   document.getElementById('userPhone').value,
+            userEmail:   document.getElementById('userEmail').value,
+            installAddr: document.getElementById('installAddr').value + " " + document.getElementById('installDetail').value,
+            bizName:     document.getElementById('bizName').value || '-',
+            bizNum:      document.getElementById('bizNum').value  || '-',
+            payMethod:   method,
+            bankOwner:   document.getElementById('bankOwner').value   || document.getElementById('userName').value,
+            bankName:    document.getElementById('bankName').value,
+            bankAccount: document.getElementById('bankAccount').value,
+            cardOwner:   document.getElementById('cardOwner').value   || document.getElementById('userName').value,
+            cardCompany: document.getElementById('cardCompany').value,
+            cardNumber:  document.getElementById('cardNumber').value,
+            cardValid:   document.getElementById('cardValid').value,
+            signature:   signaturePad.toDataURL("image/png")
+        };
+
+        Swal.fire({
+            title: '신청서 생성 중',
+            text: '문서를 변환중입니다. 잠시만 기다려 주세요...',
+            allowOutsideClick: false,
+            didOpen: () => { Swal.showLoading(); }
+        });
+
+        fetch(gasUrl, { method: 'POST', body: JSON.stringify(allData) })
+            .then(res => res.json())
+            .then(res => {
+                // ✅ [수정] 오류 응답 처리 추가
+                if (res.result === "success") {
+                    Swal.fire({
+                        title: '사장마켓 안내',
+                        text: '신청서 접수 및 PDF 생성이 완료되었습니다.',
+                        icon: 'success',
+                        confirmButtonColor: '#E6007E'
+                    }).then(() => {
+                        showSuccessUI(allData.userName);
+                    });
+                } else {
+                    Swal.fire({
+                        title: '오류 발생',
+                        text: res.message || '처리 중 오류가 발생했습니다. 담당자에게 문의해주세요.',
+                        icon: 'error',
+                        confirmButtonColor: '#E6007E'
+                    });
+                    btn.disabled = false;
+                    btn.innerText = "제출 완료";
+                }
+            })
+            .catch(e => {
+                Swal.fire({ title: '오류 발생', text: '전송에 실패했습니다. 다시 시도해주세요.', icon: 'error', confirmButtonColor: '#E6007E' });
+                btn.disabled = false;
+                btn.innerText = "제출 완료";
             });
-        }
-    }) // ✅ 여기서 괄호가 잘 닫혀야 합니다.
-    .catch(e => {
-        Swal.fire({ title: '오류 발생', text: '전송에 실패했습니다. 다시 시도해주세요.', icon: 'error' });
-        btn.disabled = false;
-        btn.innerText = "제출 완료";
-    });
-}
+    }
 
     function showSuccessUI(name) {
         document.getElementById('mainContainer').innerHTML = `
